@@ -1,0 +1,146 @@
+[{
+    "asset_type": "chart",
+    "Asset": {
+        "small_title": "some small title",
+        "title": "some title",
+        "data": "some data"
+    },
+    "description": "some chart description"
+
+},
+{
+    "asset_type": "insight",
+    "Asset": {
+
+        "text": "some text"
+    },
+    "description": "some insight description"
+},
+{
+    "asset_type": "audience",
+    "Asset": {
+
+        "gender": "male",
+        "birth_country": "Greece",
+        "age_group": 0,
+        "hours_in_social": 3,
+        "purchases": 45.5
+    },
+    "description": "some audience description"
+},
+{
+    "asset_type": "chart",
+    "Asset": {
+
+        "small_title": "some other small title",
+        "title": "some other title",
+        "data": "some other data"
+    },
+    "description": "some other chart description"
+},
+{
+    "asset_type": "chart",
+    "Asset": {
+
+        "small_title": "some other small title 2",
+        "title": "some other title 2",
+        "data": "some other data 2"
+    },
+    "description": "some other chart description 2"
+},
+{
+    "asset_type": "insight",
+    "Asset": {
+
+        "text": "some other text"
+    },
+    "description": "some other insight description"
+},
+{
+    "asset_type": "insight",
+    "Asset": {
+
+        "text": "some other text 2"
+    },
+    "description": "some other insight description 2"
+},
+{
+    "asset_type": "audience",
+    "Asset": {
+
+        "gender": "male",
+        "birth_country": "Greece",
+        "age_group": 2,
+        "hours_in_social": 1,
+        "purchases": 10.0
+    },
+    "description": "some audience description 2"
+},
+{
+    "asset_type": "audience",
+    "Asset": {
+
+        "gender": "female",
+        "birth_country": "Australia",
+        "age_group": 1,
+        "hours_in_social": 2,
+        "purchases": 57.2
+    },
+    "description": "some audience description 3"
+},
+{
+    "asset_type": "audience",
+    "Asset": {
+
+        "gender": "male",
+        "birth_country": "Cuba",
+        "age_group": 4,
+        "hours_in_social": 2,
+        "purchases": 93.4
+    },
+    "description": "some audience description 4"
+},
+{
+    "asset_type": "audience",
+    "Asset": {
+
+        "gender": "male",
+        "birth_country": "UK",
+        "age_group": 3,
+        "hours_in_social": 3,
+        "purchases": 43.5
+    },
+    "description": "some audience description 5"
+},
+{
+    "asset_type": "audience",
+    "Asset": {
+
+        "gender": "male",
+        "birth_country": "Netherlands",
+        "age_group": 0,
+        "hours_in_social": 3,
+        "purchases": 45.9
+    },
+    "description": "some audience description 6"
+},
+{
+    "asset_type": "audience",
+    "Asset": {
+
+        "gender": "male",
+        "birth_country": "Canada",
+        "age_group": 3,
+        "hours_in_social": 12,
+        "purchases": 39.9
+    },
+    "description": "some audience description 7"
+},
+{
+    "asset_type": "insight",
+    "Asset": {
+
+        "text": "some other text 3"
+    },
+    "description": "some other insight description 3"
+}]

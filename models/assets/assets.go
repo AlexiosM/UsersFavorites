@@ -6,10 +6,10 @@ import (
 
 type AssetId int64
 
-var assetsDB = map[AssetId]Asset{}
+var AssetsDB = map[AssetId]Asset{}
 
 type IAsset interface {
-	EditAssetDescription(newDescription string) *RestResponse
+	EditAssetDescription(newDescription string) RestResponse
 }
 
 type Asset struct {
@@ -47,6 +47,11 @@ const (
 	PostWar                      // 77 – 94
 	WW2                          // 95 – 100
 )
+
+type AssetRespData struct {
+	FavId     int64
+	AssetType string
+}
 
 func (ag AgeGroups) GetAgeGroup() string {
 	groups := []string{"GenZ", "Millennials", "GenX", "Boomers2", "Boomers1", "PostWar", "WW2"}

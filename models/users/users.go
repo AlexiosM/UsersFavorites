@@ -9,14 +9,15 @@ import (
 )
 
 type User struct {
-	Id       int64  `json:"id"`
-	FistName string `json:"first_name"`
-	LastName string `json:"last_name"`
-	Email    string `json:"email"`
+	Id        int64  `json:"id"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	Email     string `json:"email"`
 }
 
+var UsersDB []User
+
 func LoadUsers(filepath string) {
-	var users []User
 
 	jsonFile, err := os.Open(filepath)
 	if err != nil {
@@ -29,16 +30,16 @@ func LoadUsers(filepath string) {
 	if err != nil {
 		fmt.Println("Cound not read json file")
 	}
-	if err := json.Unmarshal(byteValue, &users); err != nil {
+	if err := json.Unmarshal(byteValue, &UsersDB); err != nil {
 		fmt.Println("Invalid json format")
 	}
 
-	fmt.Printf("Found %d users\n", len(users))
-	for i := 0; i < len(users); i++ {
-		fmt.Println("id: " + strconv.FormatInt(users[i].Id, 10))
-		fmt.Println("User name: " + users[i].FistName)
-		fmt.Println("User lastname: " + (users[i].LastName))
-		fmt.Println("User email: " + users[i].Email)
+	fmt.Printf("Found %d users\n", len(UsersDB))
+	for i := 0; i < len(UsersDB); i++ {
+		fmt.Println("id: " + strconv.FormatInt(UsersDB[i].Id, 10))
+		fmt.Println("User firstname: " + UsersDB[i].FirstName)
+		fmt.Println("User lastname: " + (UsersDB[i].LastName))
+		fmt.Println("User email: " + UsersDB[i].Email)
 		fmt.Println("-------------------------------")
 	}
 }

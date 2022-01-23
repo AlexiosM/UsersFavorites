@@ -2,7 +2,6 @@ package assets
 
 import (
 	"errors"
-	"fmt"
 )
 
 type RestResponse struct {
@@ -14,12 +13,9 @@ type RestResponse struct {
 func (Asset) EditAssetDescription(newDescription string, id AssetId) *RestResponse {
 	var a Asset
 
-	if _, ok := assetsDB[id]; ok {
-		a = assetsDB[id]
+	if _, ok := AssetsDB[id]; ok {
+		a = AssetsDB[id]
 		a.Description = newDescription
-		fmt.Println(a.AssetType)
-		fmt.Println(a.Description)
-
 	} else {
 		return &RestResponse{"", "", errors.New("Invalid Id")}
 	}

@@ -43,7 +43,7 @@ func LoadAssets(filepath string) {
 			fmt.Printf("Description: %s\n", asset.Description)
 			tmpAsset.AssetType = "chart"
 			tmpAsset.Description = asset.Description
-			assetsDB[AssetId(asset_id)] = tmpAsset
+			AssetsDB[AssetId(asset_id)] = tmpAsset
 
 		case "insight":
 			insight := Insight{}
@@ -56,7 +56,7 @@ func LoadAssets(filepath string) {
 			fmt.Printf("Description: %s\n", asset.Description)
 			tmpAsset.AssetType = "insight"
 			tmpAsset.Description = asset.Description
-			assetsDB[AssetId(asset_id)] = tmpAsset
+			AssetsDB[AssetId(asset_id)] = tmpAsset
 
 		case "audience":
 			audience := Audience{}
@@ -69,11 +69,11 @@ func LoadAssets(filepath string) {
 			fmt.Printf("Description: %s\n", asset.Description)
 			tmpAsset.AssetType = "audience"
 			tmpAsset.Description = asset.Description
-			assetsDB[AssetId(asset_id)] = tmpAsset
+			AssetsDB[AssetId(asset_id)] = tmpAsset
 
 		default:
 			fmt.Println("unable to unmarshal JSON data or differentiate the type")
 		}
 	}
-	fmt.Println(assetsDB)
+	fmt.Println(AssetsDB)
 }

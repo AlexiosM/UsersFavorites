@@ -1,9 +1,9 @@
 package models
 
-//func EditDescription(assetId int64) error {
-//	err := assets.EditAssetDescription("newDescription")
-//	if err != nil {
-//		return err
-//	}
-//	return nil
-//}
+import "GWI_assingment/platform2.0-go-challenge/models/assets"
+
+func EditDescription(description string, assetId int64) *assets.RestResponse {
+	a := assets.Asset{}
+	resp := a.EditAssetDescription(description, assets.AssetId(assetId))
+	return resp
+}

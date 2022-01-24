@@ -1,6 +1,6 @@
 # Users and their favorite Assets
 
-## Design
+## Description
 
 This is a platform of our users that have access to a list of assets. Our users to have a peronal list of favourites, meaning assets that favourite or “star” so that they have them in their frontpage dashboard for quick access. An asset can be one the following
 * Chart (that has a small title, axes titles and data)
@@ -9,3 +9,12 @@ This is a platform of our users that have access to a list of assets. Our users 
 e.g. Males from 24-35 that spent more than 3 hours on social media daily.
 
 We have a web server which has some endpoints to receive a user id and return a list of all the user’s favourites. Also we have endpoints that can add an asset to favourites, remove it, or edit its description. Assets obviously can share some common attributes (like their description) but they also have completely different structure and data.
+
+## Design
+
+In the beginning Assets of all types and Users are loaded to the in-memory databases. Two Databases have been used to hold the state of the program. The createdd packages are 
+* controllers for routing the endpoints and return the final responses,
+* favourites to add favourite (stared) assets of each user, 
+* assets to load already created assets, 
+* users to load already created users,
+* utils to edit update the two DBs with the new description

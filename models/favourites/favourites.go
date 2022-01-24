@@ -59,7 +59,10 @@ func AddFavouritesToUser(userId int64, favList ListOfFavourites) *PostRestRespon
 			FavId: fav, AssetType: asset.AssetType})
 	}
 	Favorites[user] = assetList
-	fmt.Printf("User %d with Asset List:\n%+v\n", user.Id, Favorites[user])
+	fmt.Printf("\nUser %d with Asset List:", user.Id)
+	for _, i := range assetList {
+		fmt.Printf("\n%+v", i)
+	}
 
 	return &PostRestResponse{User: user, AssetList: assetRespList}
 }

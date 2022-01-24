@@ -8,12 +8,9 @@ type AssetId int64
 
 var AssetsDB = map[AssetId]Asset{}
 
-type IAsset interface {
-	EditAssetDescription(newDescription string) RestResponse
-}
-
 type Asset struct {
 	AssetType   string `json:"asset_type"`
+	AssetID     AssetId
 	Description string `json:"description"`
 	Asset       json.RawMessage
 }

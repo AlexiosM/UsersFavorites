@@ -18,3 +18,16 @@ In the beginning Assets of all types and Users are loaded to the in-memory datab
 * assets to load already created assets, 
 * users to load already created users,
 * utils to edit update the two DBs with the new description
+
+# Rest endpoints and how to use
+Execute the command
+```
+go run main.go
+```
+|Method|Endpoint|Request Body|JSON Response|
+|-------|:-----------------------------------------:|-----------------------------------:|-----------------------------------:|
+|GET  |   localhost:8080/getuserfavourites/<user id>|    -    |user data and a list of the favourite assets or error|
+|POST |   localhost:8080/addassettofav/<user id>|    {"favourites": [ <asset id>, ... ]}        |user data and list of assets types and ids |
+|PATCH|   localhost:8080/editasset/<asset id>|  {"description":"new description"}  | asset type, id, and the new description|
+
+All Ids have to be a number and an existing Id, else an error json response will be returned.

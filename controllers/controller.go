@@ -5,8 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"GWI_assingment/platform2.0-go-challenge/models"
+	"GWI_assingment/platform2.0-go-challenge/models/assets"
 	"GWI_assingment/platform2.0-go-challenge/models/favourites"
+	"GWI_assingment/platform2.0-go-challenge/models/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -67,7 +68,7 @@ func ChangeDescription(c *gin.Context) {
 		return
 	}
 
-	resp := models.EditDescription(description.Description, id)
+	resp := utils.EditAssetDescription(description.Description, assets.AssetId(id))
 	if resp.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to edit DB"})
 		return

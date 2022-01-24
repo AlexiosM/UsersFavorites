@@ -17,12 +17,26 @@ type User struct {
 
 var UsersDB []User
 
+func (u *User) GetUserById() bool {
+
+	for _, user := range UsersDB {
+		if user.Id == u.Id {
+			u.FirstName = user.FirstName
+			u.LastName = user.LastName
+			u.Email = user.Email
+			return true
+		}
+	}
+	fmt.Println("Failed to Get User by Id")
+	return false
+}
+
 func LoadUsers(filepath string) {
 
 	jsonFile, err := os.Open(filepath)
 	if err != nil {
 		fmt.Println(err)
-		return
+		os.Exit(1)
 	}
 	fmt.Println("Successfully Opened users.json")
 	defer jsonFile.Close()

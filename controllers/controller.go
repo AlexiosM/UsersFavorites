@@ -15,23 +15,36 @@ type Description struct {
 	Description string `json:"description"`
 }
 
-func AddFavorites(c *gin.Context) {
-	var favList favourites.ListOfFavourites
+func GetFavourites(c *gin.Context) {
+	id, err := strconv.ParseInt(c.Param("user_id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Id should be a number"})
+		return
+	}
+	resp := favourites.GetFavouritesFromUser(id)
+	if resp.Error != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": resp.Error})
+		return
+	}
+	c.JSON(http.StatusOK, resp)
+}
+
+func AddFavourites(c *gin.Context) {
+	var incomingFavList favourites.ListOfFavourites
 
 	id, err := strconv.ParseInt(c.Param("user_id"), 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Id should be a number"})
 		return
 	}
-	err = c.ShouldBind(&favList)
+	err = c.ShouldBind(&incomingFavList)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid format of favourites"})
 		return
 	}
 
-	resp := favourites.AddFavouritesToUser(id, favList)
+	resp := favourites.AddFavouritesToUser(id, incomingFavList)
 
-	fmt.Println("Alex")
 	fmt.Println(resp)
 	if resp.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not add to favourites"})

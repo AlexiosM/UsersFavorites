@@ -41,8 +41,11 @@ func LoadAssets(filepath string) {
 			}
 			fmt.Printf("%+v\n", chart)
 			fmt.Printf("Description: %s\n", asset.Description)
+			tmpAsset.Asset, _ = json.Marshal(chart)
 			tmpAsset.AssetType = "chart"
 			tmpAsset.Description = asset.Description
+			fmt.Println("Alex")
+			fmt.Println(tmpAsset)
 			AssetsDB[AssetId(asset_id)] = tmpAsset
 
 		case "insight":
@@ -54,8 +57,11 @@ func LoadAssets(filepath string) {
 			}
 			fmt.Printf("%+v\n", insight)
 			fmt.Printf("Description: %s\n", asset.Description)
+			tmpAsset.Asset, _ = json.Marshal(insight)
 			tmpAsset.AssetType = "insight"
 			tmpAsset.Description = asset.Description
+			fmt.Println("Alex")
+			fmt.Println(tmpAsset)
 			AssetsDB[AssetId(asset_id)] = tmpAsset
 
 		case "audience":
@@ -69,6 +75,9 @@ func LoadAssets(filepath string) {
 			fmt.Printf("Description: %s\n", asset.Description)
 			tmpAsset.AssetType = "audience"
 			tmpAsset.Description = asset.Description
+			tmpAsset.Asset, _ = json.Marshal(audience)
+			fmt.Println("Alex")
+			fmt.Println(tmpAsset)
 			AssetsDB[AssetId(asset_id)] = tmpAsset
 
 		default:

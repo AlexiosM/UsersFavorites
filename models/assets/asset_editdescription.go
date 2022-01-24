@@ -19,5 +19,6 @@ func (Asset) EditAssetDescription(newDescription string, id AssetId) *RestRespon
 	} else {
 		return &RestResponse{"", "", errors.New("Invalid Id")}
 	}
+
 	return &RestResponse{a.AssetType, a.Description, nil}
 }

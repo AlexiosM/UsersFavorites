@@ -2,7 +2,7 @@ package endpoints
 
 import (
 	"GWI_assingment/platform2.0-go-challenge/models/assets"
-	"GWI_assingment/platform2.0-go-challenge/models/users"
+	"GWI_assingment/platform2.0-go-challenge/models/favourites"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,7 +12,7 @@ var (
 )
 
 func StartApp() {
-	users.LoadUsers("./models/users/users.json")
+	favourites.LoadUsers("./models/favourites/users.json")
 	assets.LoadAssets("./models/assets/assets.json")
 	MapUrls()
 	router.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")

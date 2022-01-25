@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -23,7 +22,7 @@ func GetFavourites(c *gin.Context) {
 		return
 	}
 	resp := favourites.GetFavouritesFromUser(id)
-	if resp.Error != nil {
+	if resp.Error != "" {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": resp.Error})
 		return
 	}
@@ -46,8 +45,7 @@ func AddFavourites(c *gin.Context) {
 
 	resp := favourites.AddFavouritesToUser(id, incomingFavList)
 
-	fmt.Println(resp)
-	if resp.Error != nil {
+	if resp.Error != "" {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not add to favourites"})
 		return
 	}

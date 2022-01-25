@@ -17,6 +17,15 @@ type User struct {
 
 var UsersDB []User
 
+func (u User) CheckIdInSlice() bool {
+	for _, user := range UsersDB {
+		if user.Id == u.Id {
+			return true
+		}
+	}
+	return false
+}
+
 func (u *User) GetUserById() bool {
 
 	for _, user := range UsersDB {

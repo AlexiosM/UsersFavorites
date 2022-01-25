@@ -12,12 +12,21 @@ We have a web server which has some endpoints to receive a user id and return a 
 
 ## Design
 
-In the beginning Assets of all types and Users are loaded to the in-memory databases. Two Databases have been used to hold the state of the program. The createdd packages are 
+An asset will be either a chart, or an insight, or an audience. Its chart has a unique Id, as well as a description
+Three Databases have been used to hold the state of the program:
+* A slice of Users indexed by their Id
+* A map of assetID to an Asset type
+* A map of a userID to an Asset list
+
+The createdd packages are 
 * controllers for routing the endpoints and return the final responses,
 * favourites to add favourite (stared) assets of each user, 
 * assets to load already created assets, 
 * users to load already created users,
 * utils to edit update the two DBs with the new description
+
+In the beginning Assets of all types and Users are loaded to the in-memory databases.
+Then the application runs.
 
 # Rest endpoints and how to use
 Execute the command

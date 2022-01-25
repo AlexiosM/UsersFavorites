@@ -9,14 +9,14 @@ import (
 var Favorites = make(map[users.User][]assets.Asset)
 
 type IFav interface {
-	GetFavouritesDB()
+	GetFavouritesDB() *map[users.User][]assets.Asset
 }
 type Fav struct {
-	FavDB *map[users.User][]assets.Asset
+	//FavDB *map[users.User][]assets.Asset
 }
 
-func (f *Fav) GetFavouritesDB() {
-	f.FavDB = &Favorites
+func (*Fav) GetFavouritesDB() *map[users.User][]assets.Asset {
+	return &Favorites
 }
 
 // Contains the IDs of the favourite Assets
@@ -36,7 +36,7 @@ type GetRestResponse struct {
 	Error     string
 }
 
-func GetFavouritesFromUser(userId int64) *GetRestResponse {
+func GetFavouritesFromUser(userId int64, interFav IFav) *GetRestResponse {
 	user := users.User{Id: userId}
 	var resAssets []assets.Asset
 	var ok bool
@@ -45,16 +45,15 @@ func GetFavouritesFromUser(userId int64) *GetRestResponse {
 		return &GetRestResponse{Error: "User not found"}
 	}
 
-	F := Fav{}
-	F.GetFavouritesDB()
-	if resAssets, ok = (*F.FavDB)[user]; !ok {
+	FavDBptr := interFav.GetFavouritesDB()
+	if resAssets, ok = (*FavDBptr)[user]; !ok {
 		return &GetRestResponse{Error: "No favorites for this user"}
 	}
 
 	return &GetRestResponse{User: user, AssetList: resAssets}
 }
 
-func AddFavouritesToUser(userId int64, favList ListOfFavourites) *PostRestResponse {
+func AddFavouritesToUser(userId int64, favList ListOfFavourites, interFav IFav) *PostRestResponse {
 	assetList := []assets.Asset{}
 	assetRespList := []assets.AssetRespData{}
 
@@ -81,9 +80,8 @@ func AddFavouritesToUser(userId int64, favList ListOfFavourites) *PostRestRespon
 		assetRespList = append(assetRespList, assets.AssetRespData{
 			FavId: fav, AssetType: asset.AssetType})
 	}
-	F := Fav{}
-	F.GetFavouritesDB()
-	(*F.FavDB)[user] = assetList
+	FavDBptr := interFav.GetFavouritesDB()
+	(*FavDBptr)[user] = assetList
 	fmt.Printf("\nUser %d with Asset List:", user.Id)
 	for _, i := range assetList {
 		fmt.Printf("\n%+v", i)

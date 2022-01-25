@@ -21,7 +21,8 @@ func GetFavourites(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Id should be a number"})
 		return
 	}
-	resp := favourites.GetFavouritesFromUser(id)
+	var favouritesDB favourites.Fav // This is the structure to be mocked for testing
+	resp := favourites.GetFavouritesFromUser(id, &favouritesDB)
 	if resp.Error != "" {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": resp.Error})
 		return
@@ -43,7 +44,8 @@ func AddFavourites(c *gin.Context) {
 		return
 	}
 
-	resp := favourites.AddFavouritesToUser(id, incomingFavList)
+	var favouritesDB favourites.Fav // This is the structure to be mocked for testing
+	resp := favourites.AddFavouritesToUser(id, incomingFavList, &favouritesDB)
 
 	if resp.Error != "" {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not add to favourites"})
@@ -66,7 +68,8 @@ func ChangeDescription(c *gin.Context) {
 		return
 	}
 
-	resp := utils.EditAssetDescription(description.Description, assets.AssetId(id))
+	var favouritesDB favourites.Fav // This is the structure to be mocked for testing
+	resp := utils.EditAssetDescription(description.Description, assets.AssetId(id), &favouritesDB)
 	if resp.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to edit DB"})
 		return

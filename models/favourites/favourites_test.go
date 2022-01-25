@@ -12,17 +12,16 @@ import (
 var MockFavourites = CreateFavouritesDB()
 
 type MockFav struct {
-	MFav *map[users.User][]assets.Asset
+	//MFav *map[users.User][]assets.Asset
 }
 
-func (mf *MockFav) GetFavouritesDB() {
-	mf.MFav = &MockFavourites
+func (*MockFav) GetFavouritesDB() *map[users.User][]assets.Asset {
+	return &MockFavourites
 }
 
 func TestGetFavouritesFromUserSuccess(t *testing.T) {
-	F := MockFav{}
-	F.GetFavouritesDB()
-	resp := favourites.GetFavouritesFromUser(1)
+	MockF := MockFav{}
+	resp := favourites.GetFavouritesFromUser(1, &MockF)
 	fmt.Println(resp)
 
 }

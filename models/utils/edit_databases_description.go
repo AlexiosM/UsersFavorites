@@ -12,7 +12,7 @@ type RestResponse struct {
 	Error       error
 }
 
-func EditAssetDescription(newDescription string, id assets.AssetId) *RestResponse {
+func EditAssetDescription(newDescription string, id assets.AssetId, interFav favourites.IFav) *RestResponse {
 	var a assets.Asset
 
 	A := assets.AsDB{}
@@ -27,14 +27,13 @@ func EditAssetDescription(newDescription string, id assets.AssetId) *RestRespons
 	}
 
 	// Change Favourites DB description for all users that have the id
-	F := favourites.Fav{}
-	F.GetFavouritesDB()
-	for user, assetList := range *F.FavDB {
+	FavDBptr := interFav.GetFavouritesDB()
+	for user, assetList := range *FavDBptr {
 		alist := []assets.Asset{}
 		for _, asset := range assetList {
 			if asset.AssetID == id {
 				//alist = favourites.Favorites[user]
-				alist = (*F.FavDB)[user]
+				alist = (*FavDBptr)[user]
 			}
 		}
 		for index, asset := range alist {
@@ -43,7 +42,7 @@ func EditAssetDescription(newDescription string, id assets.AssetId) *RestRespons
 				*a = asset
 				a.Description = newDescription
 				alist[index] = *a
-				(*F.FavDB)[user] = alist
+				(*FavDBptr)[user] = alist
 			}
 		}
 	}

@@ -15,21 +15,26 @@ type RestResponse struct {
 func EditAssetDescription(newDescription string, id assets.AssetId) *RestResponse {
 	var a assets.Asset
 
+	A := assets.AsDB{}
+	A.GetAssetDB()
 	// Change Assets DB description for id
-	if _, ok := assets.AssetsDB[id]; ok {
-		a = assets.AssetsDB[id]
+	if _, ok := (*A.As)[id]; ok {
+		a = (*A.As)[id]
 		a.Description = newDescription
-		assets.AssetsDB[id] = a
+		(*A.As)[id] = a
 	} else {
 		return &RestResponse{"", "", errors.New("Invalid Id")}
 	}
 
 	// Change Favourites DB description for all users that have the id
-	for user, assetList := range favourites.Favorites {
+	F := favourites.Fav{}
+	F.GetFavouritesDB()
+	for user, assetList := range *F.FavDB {
 		alist := []assets.Asset{}
 		for _, asset := range assetList {
 			if asset.AssetID == id {
-				alist = favourites.Favorites[user]
+				//alist = favourites.Favorites[user]
+				alist = (*F.FavDB)[user]
 			}
 		}
 		for index, asset := range alist {
@@ -38,7 +43,7 @@ func EditAssetDescription(newDescription string, id assets.AssetId) *RestRespons
 				*a = asset
 				a.Description = newDescription
 				alist[index] = *a
-				favourites.Favorites[user] = alist
+				(*F.FavDB)[user] = alist
 			}
 		}
 	}

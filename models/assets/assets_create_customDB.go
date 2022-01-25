@@ -42,7 +42,10 @@ func LoadAssets(filepath string) {
 			tmpAsset.AssetType = "chart"
 			tmpAsset.AssetID = AssetId(asset_id)
 			tmpAsset.Description = asset.Description
-			AssetsDB[AssetId(asset_id)] = tmpAsset
+
+			A := AsDB{}
+			A.GetAssetDB()
+			(*A.As)[AssetId(asset_id)] = tmpAsset
 
 		case "insight":
 			insight := Insight{}
@@ -54,7 +57,10 @@ func LoadAssets(filepath string) {
 			tmpAsset.AssetType = "insight"
 			tmpAsset.AssetID = AssetId(asset_id)
 			tmpAsset.Description = asset.Description
-			AssetsDB[AssetId(asset_id)] = tmpAsset
+
+			A := AsDB{}
+			A.GetAssetDB()
+			(*A.As)[AssetId(asset_id)] = tmpAsset
 
 		case "audience":
 			audience := Audience{}
@@ -66,14 +72,19 @@ func LoadAssets(filepath string) {
 			tmpAsset.Asset, _ = json.Marshal(audience)
 			tmpAsset.AssetID = AssetId(asset_id)
 			tmpAsset.Description = asset.Description
-			AssetsDB[AssetId(asset_id)] = tmpAsset
+
+			A := AsDB{}
+			A.GetAssetDB()
+			(*A.As)[AssetId(asset_id)] = tmpAsset
 
 		default:
 			fmt.Println("unable to unmarshal JSON data or differentiate the type")
 		}
 
 	}
-	for id, asset := range AssetsDB {
+	A := AsDB{}
+	A.GetAssetDB()
+	for id, asset := range *A.As {
 		fmt.Printf("\nAssetID:%d --> %+v\n", id, asset)
 	}
 }

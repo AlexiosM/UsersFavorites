@@ -17,6 +17,17 @@ type User struct {
 
 var UsersDB []User
 
+type IUsDB interface {
+	GetUserDB()
+}
+type UsDB struct {
+	Us *[]User
+}
+
+func (u *UsDB) GetUserDB() {
+	u.Us = &UsersDB
+}
+
 func (u User) CheckIdInSlice() bool {
 	for _, user := range UsersDB {
 		if user.Id == u.Id {

@@ -8,6 +8,17 @@ type AssetId int64
 
 var AssetsDB = map[AssetId]Asset{}
 
+type IAsDB interface {
+	GetAssetDB()
+}
+type AsDB struct {
+	As *map[AssetId]Asset
+}
+
+func (a *AsDB) GetAssetDB() {
+	a.As = &AssetsDB
+}
+
 type Asset struct {
 	AssetType   string `json:"asset_type"`
 	AssetID     AssetId

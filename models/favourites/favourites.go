@@ -8,6 +8,17 @@ import (
 
 var Favorites = make(map[users.User][]assets.Asset)
 
+type IFav interface {
+	GetFavouritesDB()
+}
+type Fav struct {
+	FavDB *map[users.User][]assets.Asset
+}
+
+func (f *Fav) GetFavouritesDB() {
+	f.FavDB = &Favorites
+}
+
 // Contains the IDs of the favourite Assets
 type ListOfFavourites struct {
 	Favourites []int64 `json:"favourites"`
@@ -34,7 +45,9 @@ func GetFavouritesFromUser(userId int64) *GetRestResponse {
 		return &GetRestResponse{Error: "User not found"}
 	}
 
-	if resAssets, ok = Favorites[user]; !ok {
+	F := Fav{}
+	F.GetFavouritesDB()
+	if resAssets, ok = (*F.FavDB)[user]; !ok {
 		return &GetRestResponse{Error: "No favorites for this user"}
 	}
 
@@ -49,20 +62,28 @@ func AddFavouritesToUser(userId int64, favList ListOfFavourites) *PostRestRespon
 	if !u.CheckIdInSlice() {
 		return &PostRestResponse{Error: "User not DB"}
 	}
-	user := users.UsersDB[userId]
+	U := users.UsDB{}
+	U.GetUserDB()
+
+	user := (*U.Us)[userId]
 
 	for _, fav := range favList.Favourites {
 		var asset assets.Asset
 		var ok bool
 
-		if asset, ok = assets.AssetsDB[assets.AssetId(fav)]; !ok {
+		A := assets.AsDB{}
+		A.GetAssetDB()
+
+		if asset, ok = (*A.As)[assets.AssetId(fav)]; !ok {
 			return &PostRestResponse{Error: "Asset not inside AssetDB"}
 		}
 		assetList = append(assetList, asset)
 		assetRespList = append(assetRespList, assets.AssetRespData{
 			FavId: fav, AssetType: asset.AssetType})
 	}
-	Favorites[user] = assetList
+	F := Fav{}
+	F.GetFavouritesDB()
+	(*F.FavDB)[user] = assetList
 	fmt.Printf("\nUser %d with Asset List:", user.Id)
 	for _, i := range assetList {
 		fmt.Printf("\n%+v", i)

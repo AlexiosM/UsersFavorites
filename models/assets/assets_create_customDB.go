@@ -15,11 +15,12 @@ func LoadAssets(filepath string) {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println("Successfully Opened users.json")
+	fmt.Println("Successfully Opened assets.json")
 	defer jsonFile.Close()
 	byteValue, err := ioutil.ReadAll(jsonFile)
 	if err != nil {
 		fmt.Println("Cound not read json file")
+		os.Exit(1)
 	}
 	if err := json.Unmarshal(byteValue, &assets); err != nil {
 		fmt.Println(err)
@@ -40,12 +41,6 @@ func LoadAssets(filepath string) {
 			}
 			tmpAsset.Asset, _ = json.Marshal(chart)
 			tmpAsset.AssetType = "chart"
-			tmpAsset.AssetID = AssetId(asset_id)
-			tmpAsset.Description = asset.Description
-
-			A := AsDB{}
-			A.GetAssetDB()
-			(*A.As)[AssetId(asset_id)] = tmpAsset
 
 		case "insight":
 			insight := Insight{}
@@ -55,12 +50,6 @@ func LoadAssets(filepath string) {
 			}
 			tmpAsset.Asset, _ = json.Marshal(insight)
 			tmpAsset.AssetType = "insight"
-			tmpAsset.AssetID = AssetId(asset_id)
-			tmpAsset.Description = asset.Description
-
-			A := AsDB{}
-			A.GetAssetDB()
-			(*A.As)[AssetId(asset_id)] = tmpAsset
 
 		case "audience":
 			audience := Audience{}
@@ -70,16 +59,16 @@ func LoadAssets(filepath string) {
 			}
 			tmpAsset.AssetType = "audience"
 			tmpAsset.Asset, _ = json.Marshal(audience)
-			tmpAsset.AssetID = AssetId(asset_id)
-			tmpAsset.Description = asset.Description
-
-			A := AsDB{}
-			A.GetAssetDB()
-			(*A.As)[AssetId(asset_id)] = tmpAsset
 
 		default:
 			fmt.Println("unable to unmarshal JSON data or differentiate the type")
 		}
+		tmpAsset.AssetID = AssetId(asset_id)
+		tmpAsset.Description = asset.Description
+
+		A := AsDB{}
+		A.GetAssetDB()
+		(*A.As)[AssetId(asset_id)] = tmpAsset
 
 	}
 	A := AsDB{}

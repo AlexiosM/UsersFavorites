@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -22,6 +23,8 @@ func GetFavourites(c *gin.Context) {
 		return
 	}
 	var favouritesDB favourites.Fav // This is the structure to be mocked for testing
+	fmt.Println("alex id")
+	fmt.Println(id)
 	resp := favourites.GetFavouritesFromUser(id, &favouritesDB)
 	if resp.Error != "" {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": resp.Error})

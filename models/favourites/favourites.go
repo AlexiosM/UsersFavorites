@@ -2,11 +2,7 @@ package favourites
 
 import (
 	"GWI_assingment/platform2.0-go-challenge/models/assets"
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"os"
-	"strconv"
 )
 
 var Favorites = make(map[User][]assets.Asset)
@@ -55,24 +51,25 @@ type GetRestResponse struct {
 //}
 
 func GetFavouritesFromUser(userId int64, interFav IFav) *GetRestResponse {
+	fmt.Println(userId)
 	user := &User{}
 	var resAssets []assets.Asset
 	var ok bool
 
 	FavDBptr := interFav.GetFavouritesDB()
 
-	for u, _ := range *FavDBptr {
+	for u, a := range *FavDBptr {
 		if u.Id == userId {
 			user = &u
+			resAssets = a
 		}
 	}
 
-	if user == nil {
-		return &GetRestResponse{Error: "User not found"}
-	}
-
 	if resAssets, ok = (*FavDBptr)[*user]; !ok {
-		return &GetRestResponse{Error: "No favorites for this user"}
+		return &GetRestResponse{Error: "User Not Found"}
+	}
+	if len(resAssets) == 0 {
+		return &GetRestResponse{Error: "User has no favourites"}
 	}
 
 	return &GetRestResponse{User: *user, AssetList: resAssets}
@@ -116,40 +113,4 @@ func AddFavouritesToUser(userId int64, favList ListOfFavourites, interFav IFav) 
 	}
 
 	return &PostRestResponse{User: *user, AssetList: assetRespList}
-}
-
-func LoadUsers(filepath string) {
-
-	Users := []User{}
-
-	jsonFile, err := os.Open(filepath)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	fmt.Println("Successfully Opened users.json")
-	defer jsonFile.Close()
-	byteValue, err := ioutil.ReadAll(jsonFile)
-	if err != nil {
-		fmt.Println("Cound not read json file")
-	}
-	if err := json.Unmarshal(byteValue, &Users); err != nil {
-		fmt.Println("Invalid json format")
-	}
-
-	F := Fav{} // I won't test LoadUsers
-	FavDBptr := F.GetFavouritesDB()
-
-	for _, user := range Users {
-		(*FavDBptr)[user] = []assets.Asset{}
-	}
-
-	fmt.Printf("Found %d users\n", len(Users))
-	for i := 0; i < len(Users); i++ {
-		fmt.Println("id: " + strconv.FormatInt(Users[i].Id, 10))
-		fmt.Println("User firstname: " + Users[i].FirstName)
-		fmt.Println("User lastname: " + (Users[i].LastName))
-		fmt.Println("User email: " + Users[i].Email)
-		fmt.Println("-------------------------------")
-	}
 }

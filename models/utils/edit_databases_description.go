@@ -3,13 +3,12 @@ package utils
 import (
 	"GWI_assingment/platform2.0-go-challenge/models/assets"
 	"GWI_assingment/platform2.0-go-challenge/models/favourites"
-	"errors"
 )
 
 type RestResponse struct {
 	AssetType   string
 	Description string
-	Error       error
+	Error       string
 }
 
 func EditAssetDescription(newDescription string, id assets.AssetId, interFav favourites.IFav, interAs assets.IAsDB) *RestResponse {
@@ -22,7 +21,7 @@ func EditAssetDescription(newDescription string, id assets.AssetId, interFav fav
 		a.Description = newDescription
 		(*AssetDBptr)[id] = a
 	} else {
-		return &RestResponse{"", "", errors.New("Invalid Id")}
+		return &RestResponse{"", "", "Invalid Id"}
 	}
 
 	// Change Favourites DB description for all users that have the id
@@ -46,5 +45,5 @@ func EditAssetDescription(newDescription string, id assets.AssetId, interFav fav
 		}
 	}
 
-	return &RestResponse{a.AssetType, a.Description, nil}
+	return &RestResponse{a.AssetType, a.Description, ""}
 }

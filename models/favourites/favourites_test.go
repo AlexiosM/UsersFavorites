@@ -43,10 +43,11 @@ func TestGetFavouritesFromUserFailureUserNotFound(t *testing.T) {
 func TestGetFavouritesFromUserFailureUserHasNoFavourites(t *testing.T) {
 	MockDB := MockFavUserHasNoFavourites{}
 	user := favourites.User{}
+	assetList := []assets.Asset{}
 
 	expectedRestResponse := &favourites.GetRestResponse{
 		User:      user,
-		AssetList: nil,
+		AssetList: assetList,
 		Error:     "User has no favourites",
 	}
 
@@ -141,6 +142,7 @@ func (*MockFav) GetUserById(id int64) *favourites.User {
 	}
 	return nil
 }
+
 func CreateFavouritesDB() map[favourites.User][]assets.Asset {
 	result := map[favourites.User][]assets.Asset{}
 	user := favourites.User{Id: 1, FirstName: "Test", LastName: "Man", Email: "somemail@example.com"}
@@ -153,6 +155,7 @@ func CreateFavouritesDB() map[favourites.User][]assets.Asset {
 	result[user] = assetlist
 	return result
 }
+
 func CreateAssetList() map[assets.AssetId]assets.Asset {
 	assetsmap := map[assets.AssetId]assets.Asset{}
 	insight, _ := json.Marshal(assets.Insight{Text: "some text"})
@@ -180,7 +183,7 @@ type MockFavUserHasNoFavourites struct {
 var emptyDB = make(map[favourites.User][]assets.Asset)
 
 func (*MockFavUserHasNoFavourites) GetFavouritesDB() *map[favourites.User][]assets.Asset {
-	user := favourites.User{Id: 1, FirstName: "ALEx", LastName: "Man", Email: "somemail@example.com"}
+	user := favourites.User{Id: 1, FirstName: "Test", LastName: "Man", Email: "somemail@example.com"}
 	emptyDB[user] = []assets.Asset{}
 	return &emptyDB
 }

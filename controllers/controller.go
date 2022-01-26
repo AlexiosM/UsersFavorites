@@ -72,7 +72,7 @@ func ChangeDescription(c *gin.Context) {
 	var favouritesDB favourites.Fav // This is the structure to be mocked for testing
 	var assetsDB assets.AsDB
 	resp := utils.EditAssetDescription(description.Description, assets.AssetId(id), &favouritesDB, &assetsDB)
-	if resp.Error != nil {
+	if resp.Error != "" {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to edit DB"})
 		return
 	}

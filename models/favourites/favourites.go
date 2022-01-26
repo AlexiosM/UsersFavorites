@@ -59,7 +59,11 @@ func GetFavouritesFromUser(userId int64, interFav IFav) *GetRestResponse {
 
 	resAssets = (*FavDBptr)[*user]
 	if len(resAssets) == 0 {
-		return &GetRestResponse{Error: "User has no favourites"}
+		return &GetRestResponse{
+			User:      User{},
+			AssetList: []assets.Asset{},
+			Error:     "User has no favourites",
+		}
 	}
 
 	return &GetRestResponse{User: *user, AssetList: resAssets}

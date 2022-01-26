@@ -6,17 +6,16 @@ import (
 
 type AssetId int64
 
-var AssetsDB = map[AssetId]Asset{}
+var AssetsDB = make(map[AssetId]Asset)
 
 type IAsDB interface {
-	GetAssetDB()
+	GetAssetDB() *map[AssetId]Asset
 }
 type AsDB struct {
-	As *map[AssetId]Asset
 }
 
-func (a *AsDB) GetAssetDB() {
-	a.As = &AssetsDB
+func (*AsDB) GetAssetDB() *map[AssetId]Asset {
+	return &AssetsDB
 }
 
 type Asset struct {

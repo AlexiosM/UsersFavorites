@@ -39,35 +39,26 @@ type GetRestResponse struct {
 	Error     string
 }
 
-//func GetUserById(userId int64, interFav IFav) *User {
-//	FavDBptr := interFav.GetFavouritesDB()
-//
-//	for user, _ := range *FavDBptr {
-//		if user.Id == userId {
-//			return &user
-//		}
-//	}
-//	return nil
-//}
-
 func GetFavouritesFromUser(userId int64, interFav IFav) *GetRestResponse {
 	fmt.Println(userId)
 	user := &User{}
 	var resAssets []assets.Asset
-	var ok bool
-
 	FavDBptr := interFav.GetFavouritesDB()
+	found := false
 
 	for u, a := range *FavDBptr {
 		if u.Id == userId {
+			found = true
 			user = &u
 			resAssets = a
+			break
 		}
 	}
-
-	if resAssets, ok = (*FavDBptr)[*user]; !ok {
+	if !found {
 		return &GetRestResponse{Error: "User Not Found"}
 	}
+
+	resAssets = (*FavDBptr)[*user]
 	if len(resAssets) == 0 {
 		return &GetRestResponse{Error: "User has no favourites"}
 	}
@@ -75,31 +66,36 @@ func GetFavouritesFromUser(userId int64, interFav IFav) *GetRestResponse {
 	return &GetRestResponse{User: *user, AssetList: resAssets}
 }
 
-func AddFavouritesToUser(userId int64, favList ListOfFavourites, interFav IFav) *PostRestResponse {
+func AddFavouritesToUser(userId int64, favList ListOfFavourites, interFav IFav, interAs assets.IAsDB) *PostRestResponse {
 	user := &User{}
 	assetList := []assets.Asset{}
 	assetRespList := []assets.AssetRespData{}
-
+	AssetDBptr := interAs.GetAssetDB()
 	FavDBptr := interFav.GetFavouritesDB()
 
+	fmt.Println("FavDBptr")
+	fmt.Println(FavDBptr)
+	// Get user
+	found := false
 	for u, _ := range *FavDBptr {
 		if u.Id == userId {
+			found = true
 			user = &u
+			break
 		}
 	}
-
-	if user == nil {
-		return &PostRestResponse{Error: "User not found"}
+	if !found {
+		return &PostRestResponse{Error: "User Not Found"}
 	}
 
+	// check favourite list and remove already existing
+
+	// add favourite list to user
 	for _, fav := range favList.Favourites {
 		var asset assets.Asset
 		var ok bool
 
-		A := assets.AsDB{}
-		A.GetAssetDB()
-
-		if asset, ok = (*A.As)[assets.AssetId(fav)]; !ok {
+		if asset, ok = (*AssetDBptr)[assets.AssetId(fav)]; !ok {
 			return &PostRestResponse{Error: "Asset not inside AssetDB"}
 		}
 		assetList = append(assetList, asset)

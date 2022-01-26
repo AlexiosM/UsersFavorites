@@ -12,16 +12,15 @@ type RestResponse struct {
 	Error       error
 }
 
-func EditAssetDescription(newDescription string, id assets.AssetId, interFav favourites.IFav) *RestResponse {
+func EditAssetDescription(newDescription string, id assets.AssetId, interFav favourites.IFav, interAs assets.IAsDB) *RestResponse {
 	var a assets.Asset
 
-	A := assets.AsDB{}
-	A.GetAssetDB()
+	AssetDBptr := interAs.GetAssetDB()
 	// Change Assets DB description for id
-	if _, ok := (*A.As)[id]; ok {
-		a = (*A.As)[id]
+	if _, ok := (*AssetDBptr)[id]; ok {
+		a = (*AssetDBptr)[id]
 		a.Description = newDescription
-		(*A.As)[id] = a
+		(*AssetDBptr)[id] = a
 	} else {
 		return &RestResponse{"", "", errors.New("Invalid Id")}
 	}

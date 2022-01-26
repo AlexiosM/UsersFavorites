@@ -67,13 +67,13 @@ func LoadAssets(filepath string) {
 		tmpAsset.Description = asset.Description
 
 		A := AsDB{}
-		A.GetAssetDB()
-		(*A.As)[AssetId(asset_id)] = tmpAsset
+		assetPtr := A.GetAssetDB()
+		(*assetPtr)[AssetId(asset_id)] = tmpAsset
 
 	}
 	A := AsDB{}
-	A.GetAssetDB()
-	for id, asset := range *A.As {
+	assetPtr := A.GetAssetDB()
+	for id, asset := range *assetPtr {
 		fmt.Printf("\nAssetID:%d --> %+v\n", id, asset)
 	}
 }

@@ -40,7 +40,6 @@ type GetRestResponse struct {
 }
 
 func GetFavouritesFromUser(userId int64, interFav IFav) *GetRestResponse {
-	fmt.Println(userId)
 	user := &User{}
 	var resAssets []assets.Asset
 	FavDBptr := interFav.GetFavouritesDB()
@@ -73,8 +72,6 @@ func AddFavouritesToUser(userId int64, favList ListOfFavourites, interFav IFav, 
 	AssetDBptr := interAs.GetAssetDB()
 	FavDBptr := interFav.GetFavouritesDB()
 
-	fmt.Println("FavDBptr")
-	fmt.Println(FavDBptr)
 	// Get user
 	found := false
 	for u, _ := range *FavDBptr {

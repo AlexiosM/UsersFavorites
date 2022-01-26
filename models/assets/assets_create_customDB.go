@@ -26,10 +26,8 @@ func LoadAssets(filepath string) {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println("================================")
 
 	for asset_id, asset := range assets {
-		fmt.Println("-----------------------")
 		tmpAsset := Asset{}
 
 		switch asset.AssetType {

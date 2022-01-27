@@ -1,8 +1,10 @@
 package utils
 
 import (
+	"GWI_assingment/platform2.0-go-challenge/logger"
 	"GWI_assingment/platform2.0-go-challenge/models/assets"
 	"GWI_assingment/platform2.0-go-challenge/models/favourites"
+	"strconv"
 )
 
 type RestResponse struct {
@@ -21,6 +23,7 @@ func EditAssetDescription(newDescription string, id assets.AssetId, interFav fav
 		a.Description = newDescription
 		(*AssetDBptr)[id] = a
 	} else {
+		logger.Log.Error("Invalid ID")
 		return &RestResponse{"", "", "Invalid Id"}
 	}
 
@@ -44,6 +47,7 @@ func EditAssetDescription(newDescription string, id assets.AssetId, interFav fav
 			}
 		}
 	}
+	logger.Log.Info("AssetId " + strconv.FormatInt((int64)(a.AssetID), 10) + "(" + a.AssetType + ") took a new description: " + a.Description)
 
 	return &RestResponse{a.AssetType, a.Description, ""}
 }

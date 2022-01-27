@@ -1,8 +1,9 @@
 package favourites
 
 import (
+	"GWI_assingment/platform2.0-go-challenge/logger"
 	"GWI_assingment/platform2.0-go-challenge/models/assets"
-	"fmt"
+	"strconv"
 )
 
 var Favorites = make(map[User][]assets.Asset)
@@ -40,6 +41,7 @@ type GetRestResponse struct {
 }
 
 func GetFavouritesFromUser(userId int64, interFav IFav) *GetRestResponse {
+	logger.Log.Sugar().Infof("Getting userID:%d favourites from DB", userId)
 	user := &User{}
 	var resAssets []assets.Asset
 	FavDBptr := interFav.GetFavouritesDB()
@@ -54,11 +56,13 @@ func GetFavouritesFromUser(userId int64, interFav IFav) *GetRestResponse {
 		}
 	}
 	if !found {
+		logger.Log.Error("User Not Found")
 		return &GetRestResponse{Error: "User Not Found"}
 	}
 
 	resAssets = (*FavDBptr)[*user]
 	if len(resAssets) == 0 {
+		logger.Log.Error("User has no favourites")
 		return &GetRestResponse{
 			User:      User{},
 			AssetList: []assets.Asset{},
@@ -70,6 +74,7 @@ func GetFavouritesFromUser(userId int64, interFav IFav) *GetRestResponse {
 }
 
 func AddFavouritesToUser(userId int64, favList ListOfFavourites, interFav IFav, interAs assets.IAsDB) *PostRestResponse {
+	logger.Log.Sugar().Infof("Adding userID:%d favourites to DB", userId)
 	user := &User{}
 	assetList := []assets.Asset{}
 	assetRespList := []assets.AssetRespData{}
@@ -86,10 +91,9 @@ func AddFavouritesToUser(userId int64, favList ListOfFavourites, interFav IFav, 
 		}
 	}
 	if !found {
+		logger.Log.Error("User Not Found")
 		return &PostRestResponse{Error: "User Not Found"}
 	}
-
-	// check favourite list and remove already existing
 
 	// add favourite list to user
 	for _, fav := range favList.Favourites {
@@ -97,6 +101,7 @@ func AddFavouritesToUser(userId int64, favList ListOfFavourites, interFav IFav, 
 		var ok bool
 
 		if asset, ok = (*AssetDBptr)[assets.AssetId(fav)]; !ok {
+			logger.Log.Error("Asset " + strconv.FormatInt((int64)(asset.AssetID), 10) + "not inside AssetDB")
 			return &PostRestResponse{Error: "Asset not inside AssetDB"}
 		}
 		assetList = append(assetList, asset)
@@ -104,10 +109,11 @@ func AddFavouritesToUser(userId int64, favList ListOfFavourites, interFav IFav, 
 			FavId: fav, AssetType: asset.AssetType})
 	}
 	(*FavDBptr)[*user] = assetList
-	fmt.Printf("\nUser %d with Asset List:", user.Id)
-	for _, i := range assetList {
-		fmt.Printf("\n%+v", i)
-	}
+
+	// fmt.Printf("\nUser %d with Asset List:", user.Id)
+	// for _, i := range assetList {
+	// 	fmt.Printf("\n%+v", i)
+	// }
 
 	return &PostRestResponse{User: *user, AssetList: assetRespList}
 }
